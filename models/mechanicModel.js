@@ -15,15 +15,26 @@ const mechanicSchema = mongoose.Schema(
         },
 
         contactNo: {
-            type: Number,
+            type: String,
             required: true,
             unique: true
         },
 
-        shopNo: {
+        address: {
             type: String,
             required: true,
-            unique: true
+            index: true,
+        },
+
+        mechanicType: {
+            type: String,
+            required: true,
+
+        },
+
+        speciality: {
+            type: String,
+            required: true,
         },
 
         username: {
@@ -35,13 +46,19 @@ const mechanicSchema = mongoose.Schema(
         email: {
             type: String,
             required: true,
-            unique: true
+            unique: true,
+            index: true,
         },
 
         password: {
             type: String,
             required: true
         },
+
+        rating: {
+            type: String,
+            index: true,
+        }
 
 
     },

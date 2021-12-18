@@ -4,7 +4,7 @@ const generateToken = require('../utils/generateToken')
 
 const registerMechanic = asyncHandler(async (req, res) => {
 
-    const { name, cnicNo, contactNo, shopNo, username, email, password } = req.body
+    const { name, cnicNo, contactNo, address, mechanicType, speciality, username, email, password, rating } = req.body
 
     const mechanicExists = await Mechanic.findOne({ cnicNo })
 
@@ -17,10 +17,13 @@ const registerMechanic = asyncHandler(async (req, res) => {
         name,
         cnicNo,
         contactNo,
-        shopNo,
+        address,
+        mechanicType,
+        speciality,
         username,
         email,
         password,
+        rating,
 
     })
 
@@ -29,11 +32,13 @@ const registerMechanic = asyncHandler(async (req, res) => {
             _id: mechanic._id,
             name: mechanic.name,
             cnicNo: mechanic.cnicNo,
-            contactNo: mechanic.contactNo,
-            shopNo: mechanic.shopNo,
             username: mechanic.username,
             email: mechanic.email,
-            token: generateToken(mechanic._id)
+            contactNo: mechanic.contactNo,
+            address: mechanic.address,
+            mechanicType: mechanic.mechanicType,
+            speciality: mechanic.speciality,
+
         })
     } else {
         res.status(400)
@@ -52,7 +57,9 @@ const authMechanic = asyncHandler(async (req, res) => {
             name: mechanic.name,
             email: mechanic.email,
             contactNo: mechanic.contactNo,
-            shopNo: mechanic.shopNo,
+            address: mechanic.address,
+            mechanicType: mechanic.mechanicType,
+            speciality: mechanic.speciality,
             token: generateToken(mechanic._id)
         })
     } else {
@@ -61,11 +68,25 @@ const authMechanic = asyncHandler(async (req, res) => {
     }
 })
 
-const getMechanic = asyncHandler(async (req, res) => {
-    Mechanic.find({}, function (err, mechanics) {
+const getCarTuningMechanic = asyncHandler(async (req, res) => {
+    Mechanic.find({ mechanicType: 'Car', speciality: 'Tuning' }, function (err, mechanics) {
         if (err) return res.status(500).send("There was a problem finding the Mechanic.");
         res.status(200).send(mechanics);
     })
 })
 
-module.exports = { registerMechanic, authMechanic, getMechanic }
+const getCarAxleMechanic = asyncHandler(async (req, res) => {
+    Mechanic.find({ mechanicType: 'Car', speciality: 'Axle' }, function (err, mechanics) {
+        if (err) return res.status(500).send("There was a problem finding the Mechanic.");
+        res.status(200).send(mechanics);
+    })
+})
+
+const getCarACMechanic = asyncHandler(async (req, res) => {
+    Mechanic.find({ mechanicType: 'Car', speciality: 'A/C' }, function (err, mechanics) {
+        if (err) return res.status(500).send("There was a problem finding the Mechanic.");
+        res.status(200).send(mechanics);
+    })
+})
+
+module.exports = { registerMechanic, authMechanic, getCarTuningMechanic, getCarAxleMechanic, getCarACMechanic }

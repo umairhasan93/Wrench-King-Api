@@ -89,4 +89,11 @@ const getCarACMechanic = asyncHandler(async (req, res) => {
     })
 })
 
-module.exports = { registerMechanic, authMechanic, getCarTuningMechanic, getCarAxleMechanic, getCarACMechanic }
+const getBikeMechanic = asyncHandler(async (req, res) => {
+    Mechanic.find({ mechanicType: 'Bike' }, function (err, mechanics) {
+        if (err) return res.status(500).send("There was a problem finding the Mechanic.");
+        res.status(200).send(mechanics);
+    })
+})
+
+module.exports = { registerMechanic, authMechanic, getCarTuningMechanic, getCarAxleMechanic, getCarACMechanic, getBikeMechanic }

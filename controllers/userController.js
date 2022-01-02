@@ -36,7 +36,12 @@ const authUser = asyncHandler(async (req, res) => {
 
     if (user && (await user.matchPassword(password))) {
         res.json({
-            name: user.name,
+            fname: user.firstname,
+            lname: user.lastname,
+            name: user.firstname + ' ' + user.lastname,
+            contact: user.contact,
+            username: user.username,
+            email: user.email,
             role: user.role,
             token: generateToken(user._id)
         })

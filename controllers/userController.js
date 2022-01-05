@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 const generateToken = require('../utils/generateToken')
+const bcrypt = require('bcryptjs')
 
 
 
@@ -54,7 +55,7 @@ const authUser = asyncHandler(async (req, res) => {
 })
 
 const findUser = asyncHandler(async (req, res) => {
-    User.findOne({ _id: req.params._id }, function (err, user) {
+    User.findOne({ "_id": req.params._id }, function (err, user) {
         if (err) return res.status(500).send("There was a problem finding the Mechanic.");
         res.status(200).send(user);
     })
@@ -70,5 +71,29 @@ const updateUser = asyncHandler(async (req, res) => {
     res.status(200).send(user);
 })
 
+const changePassword = asyncHandler(async (req, res) => {
+    console.log(req.params._id);
+    const { currentPassword, password } = req.body;
+    // Encrypting Update Password
+    req.body.password = await bcrypt.hash(req.body.password, 10)
+    console.log(currentPassword, password, req.body.password);
 
-module.exports = { registerUser, authUser, findUser, updateUser }
+    const user = await User.findOne({ "_id": req.params._id })
+    console.log("User Found");
+    console.log(user);
+
+    if (user && (await user.matchPassword(currentPassword))) {
+        console.log("Password Matched");
+
+        const user = await User.findByIdAndUpdate(req.params._id, { password: req.body.password }, { new: true });
+        if (!user) {
+            return res.status(500).send("There's a problem Updating User")
+        }
+        res.status(200).send(user);
+
+    }
+
+})
+
+
+module.exports = { registerUser, authUser, findUser, updateUser, changePassword }

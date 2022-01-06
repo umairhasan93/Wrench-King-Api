@@ -68,17 +68,12 @@ const authMechanic = asyncHandler(async (req, res) => {
     }
 })
 
-const getCarTuningMechanic = asyncHandler(async (req, res) => {
-    Mechanic.find({ mechanicType: 'Car', speciality: 'Tuning' }, function (err, mechanics) {
-        if (err) return res.status(500).send("There was a problem finding the Mechanic.");
-        res.status(200).send(mechanics);
-    })
-})
-
-const getCarAxleMechanic = asyncHandler(async (req, res) => {
-    const mechanic = await Mechanic.find({ mechanicType: 'Car', speciality: 'Axle' }).sort({ rating: -1 })
-    return res.json(mechanic)
-})
+// const getCarTuningMechanic = asyncHandler(async (req, res) => {
+//     Mechanic.find({ mechanicType: 'Car', speciality: 'Tuning' }, function (err, mechanics) {
+//         if (err) return res.status(500).send("There was a problem finding the Mechanic.");
+//         res.status(200).send(mechanics);
+//     })
+// })
 
 // const getCarAxleMechanic = asyncHandler(async (req, res) => {
 //     Mechanic.find({ mechanicType: 'Car', speciality: 'Axle' }, function (err, mechanics) {
@@ -87,18 +82,42 @@ const getCarAxleMechanic = asyncHandler(async (req, res) => {
 //     })
 // })
 
+// const getCarACMechanic = asyncHandler(async (req, res) => {
+//     Mechanic.find({ mechanicType: 'Car', speciality: 'A/C' }, function (err, mechanics) {
+//         if (err) return res.status(500).send("There was a problem finding the Mechanic.");
+//         res.status(200).send(mechanics);
+//     })
+// })
+
+// const getBikeMechanic = asyncHandler(async (req, res) => {
+//     Mechanic.find({ mechanicType: 'Bike' }, function (err, mechanics) {
+//         if (err) return res.status(500).send("There was a problem finding the Mechanic.");
+//         res.status(200).send(mechanics);
+//     })
+// })
+
+const getCarTuningMechanic = asyncHandler(async (req, res) => {
+    const mechanic = await Mechanic.find({ mechanicType: 'Car', speciality: 'Tuning' }).sort({ rating: -1 })
+    return res.json(mechanic)
+})
+
+const getCarAxleMechanic = asyncHandler(async (req, res) => {
+    const mechanic = await Mechanic.find({ mechanicType: 'Car', speciality: 'Axle' }).sort({ rating: -1 })
+    return res.json(mechanic)
+})
+
+
 const getCarACMechanic = asyncHandler(async (req, res) => {
-    Mechanic.find({ mechanicType: 'Car', speciality: 'A/C' }, function (err, mechanics) {
-        if (err) return res.status(500).send("There was a problem finding the Mechanic.");
-        res.status(200).send(mechanics);
-    })
+    const mechanic = await Mechanic.find({ mechanicType: 'Car', speciality: 'A/C' }).sort({ rating: -1 })
+    return res.json(mechanic)
 })
 
 const getBikeMechanic = asyncHandler(async (req, res) => {
-    Mechanic.find({ mechanicType: 'Bike' }, function (err, mechanics) {
-        if (err) return res.status(500).send("There was a problem finding the Mechanic.");
-        res.status(200).send(mechanics);
-    })
+    const mechanic = await Mechanic.find({ mechanicType: 'Bike' }).sort({ rating: -1 })
+    return res.json(mechanic)
 })
+
+
+
 
 module.exports = { registerMechanic, authMechanic, getCarTuningMechanic, getCarAxleMechanic, getCarACMechanic, getBikeMechanic }

@@ -2,32 +2,23 @@ const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 const generateToken = require('../utils/generateToken')
 const bcrypt = require('bcryptjs')
-
-
+// const sgMail = require("@sendgrid/mail");
 
 const registerUser = asyncHandler(async (req, res) => {
 
     const { firstname, lastname, email, contact, username, password } = req.body
 
-    const user = await User.create({
-        firstname,
-        lastname,
-        email,
-        contact,
-        username,
-        password
+    User.findOne({ email }).exec((err, user) => {
+        if (user) {
+            return res.status(400).send("User Already Exist.")
+        }
+        let newUser = new User({ firstname, lastname, email, contact, username, password })
+        newUser.save((err, success) => {
+            if (err) return res.status(500).send("There was a Problem in SigningUp.")
+            res.status(200).send(success)
+        })
     })
 
-    if (user) {
-        res.status(201).json({
-            _id: user._id,
-            username: user.username,
-            token: generateToken(user._id)
-        })
-    } else {
-        res.status(400)
-        throw new Error('Error Occured!')
-    }
 })
 
 const authUser = asyncHandler(async (req, res) => {
@@ -95,5 +86,31 @@ const changePassword = asyncHandler(async (req, res) => {
 
 })
 
+const forgotPassword = asyncHandler(async (req, res) => {
+    console.log(req.params._id);
+    const { currentPassword, password } = req.body;
+    // Encrypting Update Password
+    req.body.password = await bcrypt.hash(req.body.password, 10)
+    console.log(req.params._id, password, req.body.password);
 
-module.exports = { registerUser, authUser, findUser, updateUser, changePassword }
+    const user = await User.findOne({ "email": req.params._id })
+
+
+    if (user) {
+        console.log(user._id);
+        const updateUser = await User.findByIdAndUpdate(user._id, { password: req.body.password }, { new: true });
+        if (!user) {
+            return res.status(500).send("Not Valid Email")
+        }
+        res.status(200).send(updateUser);
+    }
+
+
+
+
+
+
+})
+
+
+module.exports = { registerUser, authUser, findUser, updateUser, changePassword, forgotPassword }

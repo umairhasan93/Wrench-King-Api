@@ -44,6 +44,15 @@ const userSchema = mongoose.Schema(
             type: String,
             enum: roles,
             default: 'user'
+        },
+
+        resetLink: {
+            data: String,
+            default: ''
+        },
+
+        isVerified: {
+            type: Boolean
         }
     },
 

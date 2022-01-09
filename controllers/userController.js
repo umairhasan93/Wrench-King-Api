@@ -88,21 +88,25 @@ const changePassword = asyncHandler(async (req, res) => {
 
 const forgotPassword = asyncHandler(async (req, res) => {
     console.log(req.params._id);
-    const { currentPassword, password } = req.body;
-    // Encrypting Update Password
-    req.body.password = await bcrypt.hash(req.body.password, 10)
-    console.log(req.params._id, password, req.body.password);
+    if (req.params._id === '') {
+        res.status(500).send('Provide Your Email')
+    } else {
+        const { currentPassword, password } = req.body;
+        // Encrypting Update Password
+        req.body.password = await bcrypt.hash(req.body.password, 10)
+        console.log(req.params._id, password, req.body.password);
 
-    const user = await User.findOne({ "email": req.params._id })
+        const user = await User.findOne({ "email": req.params._id })
 
 
-    if (user) {
-        console.log(user._id);
-        const updateUser = await User.findByIdAndUpdate(user._id, { password: req.body.password }, { new: true });
-        if (!user) {
-            return res.status(500).send("Not Valid Email")
+        if (user) {
+            console.log(user._id);
+            const updateUser = await User.findByIdAndUpdate(user._id, { password: req.body.password }, { new: true });
+            if (!user) {
+                return res.status(500).send("Not Valid Email")
+            }
+            res.status(200).send(updateUser);
         }
-        res.status(200).send(updateUser);
     }
 
 

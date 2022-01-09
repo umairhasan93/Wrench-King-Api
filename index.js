@@ -4,6 +4,7 @@ const connectDB = require('./config/db');
 const adminRoutes = require('./routes/adminRoutes')
 const mechanicRoute = require('./routes/mechanicRoute')
 const userRoute = require('./routes/userRoutes')
+const bookingRoute = require('./routes/bookingRoutes')
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
 const cors = require('cors')
 
@@ -23,6 +24,8 @@ app.use('/api/admin', adminRoutes)
 app.use('/api/mechanics', mechanicRoute)
 
 app.use('/api/user', userRoute)
+
+app.use('/api/booking', bookingRoute)
 
 app.use(notFound)
 app.use(errorHandler)

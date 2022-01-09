@@ -112,6 +112,7 @@ const getCarACMechanic = asyncHandler(async (req, res) => {
     return res.json(mechanic)
 })
 
+
 const getBikeMechanic = asyncHandler(async (req, res) => {
     const mechanic = await Mechanic.find({ mechanicType: 'Bike' }).sort({ rating: -1 })
     return res.json(mechanic)

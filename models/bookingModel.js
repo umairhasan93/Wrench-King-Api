@@ -73,9 +73,11 @@ const BookingSchema = mongoose.Schema(
 
         Requested_Date: {
             type: String,
+        },
+
+        Status: {
+            type: String
         }
-
-
 
     },
 

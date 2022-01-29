@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const adminRoutes = require('./routes/adminRoutes')
 const mechanicRoute = require('./routes/mechanicRoute')
+const towingVanRoute = require('./routes/towingVanRoutes')
 const userRoute = require('./routes/userRoutes')
 const bookingRoute = require('./routes/bookingRoutes')
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
@@ -22,6 +23,8 @@ app.get('/', (req, res) => {
 app.use('/api/admin', adminRoutes)
 
 app.use('/api/mechanics', mechanicRoute)
+
+app.use('/api/towingVan', towingVanRoute)
 
 app.use('/api/user', userRoute)
 

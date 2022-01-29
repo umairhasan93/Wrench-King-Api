@@ -46,9 +46,10 @@ const authUser = asyncHandler(async (req, res) => {
 })
 
 const findUser = asyncHandler(async (req, res) => {
+    console.log(req.params._id);
     User.findOne({ "_id": req.params._id }, function (err, user) {
         if (err) return res.status(500).send("There was a problem finding the Mechanic.");
-        res.status(200).send(user);
+        res.status(200).send(JSON.stringify(user));
     })
 })
 

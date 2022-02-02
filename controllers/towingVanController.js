@@ -32,4 +32,9 @@ const AddTowingVan = asyncHandler(async (req, res) => {
     }
 })
 
-module.exports = { AddTowingVan }
+const getTowingVan = asyncHandler(async (req, res) => {
+    const towingvan = await TowingVan.find({}).sort({ rating: -1 })
+    return res.json(towingvan)
+})
+
+module.exports = { AddTowingVan, getTowingVan }

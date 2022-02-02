@@ -1,23 +1,42 @@
 const asyncHandler = require('express-async-handler')
+const dotenv = require('dotenv');
 const User = require('../models/userModel')
 const generateToken = require('../utils/generateToken')
 const bcrypt = require('bcryptjs')
-// const sgMail = require("@sendgrid/mail");
+// const mailgun = require("mailgun-js");
+
+// dotenv.config()
+// const DOMAIN = 'sandbox78f59396ca4e4eb9ba91d5fb3e0b92be.mailgun.org';
+// const APIKEY = process.env.MAILGUN_APIKEY
+// // console.log(APIKEY);
+// const mg = mailgun({ apiKey: APIKEY, domain: DOMAIN });
+
+
 
 const registerUser = asyncHandler(async (req, res) => {
 
     const { firstname, lastname, email, contact, username, password } = req.body
+    // console.log(req.body);
 
-    User.findOne({ email }).exec((err, user) => {
-        if (user) {
-            return res.status(400).send("User Already Exist.")
-        }
-        let newUser = new User({ firstname, lastname, email, contact, username, password })
-        newUser.save((err, success) => {
-            if (err) return res.status(500).send("There was a Problem in SigningUp.")
-            res.status(200).send(success)
-        })
+    const userExist = await User.findOne({ email })
+    if (userExist) {
+        return res.status(400).send("User Already Exist.")
+    }
+
+    const user = await User.create({
+        firstname,
+        lastname,
+        email,
+        contact,
+        username,
+        password,
     })
+
+    if (user) {
+        res.status(200).send(user)
+    } else {
+        res.status(500).send("Problem Signing Up!")
+    }
 
 })
 
@@ -29,11 +48,10 @@ const authUser = asyncHandler(async (req, res) => {
     if (user && (await user.matchPassword(password))) {
         res.json({
             id: user._id,
-            fname: user.firstname,
-            lname: user.lastname,
+            firstname: user.firstname,
+            lastname: user.lastname,
             name: user.firstname + ' ' + user.lastname,
             contact: user.contact,
-            password: user.password,
             username: user.username,
             email: user.email,
             role: user.role,
@@ -60,7 +78,7 @@ const updateUser = asyncHandler(async (req, res) => {
     if (!user) {
         return res.status(500).send("There's a problem Updating User")
     }
-    res.status(200).send(user);
+    res.status(200).send(JSON.stringify(user));
 })
 
 const changePassword = asyncHandler(async (req, res) => {
@@ -79,7 +97,7 @@ const changePassword = asyncHandler(async (req, res) => {
 
         const user = await User.findByIdAndUpdate(req.params._id, { password: req.body.password }, { new: true });
         if (!user) {
-            return res.status(500).send("There's a problem Updating User")
+            return res.status(500).send("There's a problem Reseting Password")
         }
         res.status(200).send(user);
 

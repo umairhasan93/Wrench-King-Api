@@ -3,6 +3,7 @@ const { registerUser, authUser, findUser, updateUser, changePassword, forgotPass
 
 const router = express.Router()
 
+// router.route('/otp').post(signUpotp)
 router.route('/register').post(registerUser)
 router.route('/login').post(authUser)
 router.route('/:_id').put(updateUser)

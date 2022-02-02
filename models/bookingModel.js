@@ -75,6 +75,10 @@ const BookingSchema = mongoose.Schema(
             type: String,
         },
 
+        Type: {
+            type: String
+        },
+
         Status: {
             type: String
         }

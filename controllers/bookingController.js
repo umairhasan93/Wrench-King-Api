@@ -5,7 +5,7 @@ const generateToken = require('../utils/generateToken')
 
 const Bookings = asyncHandler(async (req, res) => {
 
-    const { User_Name, User_Number, User_Email, Car_Company, Model, Model_Year, Mechanic_Name, Mechanic_Number, Mechanic_Address, Mechanic_Speciality, Mechanic_Type, Booking_Date, Requested_Date, Status } = req.body
+    const { User_Name, User_Number, User_Email, Car_Company, Model, Model_Year, Mechanic_Name, Mechanic_Number, Mechanic_Address, Mechanic_Speciality, Mechanic_Type, Booking_Date, Requested_Date, Type, Status } = req.body
 
     const booking = await Booking.create({
         User_Name,
@@ -21,6 +21,7 @@ const Bookings = asyncHandler(async (req, res) => {
         Mechanic_Type,
         Booking_Date,
         Requested_Date,
+        Type,
         Status
 
     }, function (err, booking) {
@@ -47,6 +48,13 @@ const findConfirmedBooking = asyncHandler(async (req, res) => {
     })
 })
 
+const findBooking = asyncHandler(async (req, res) => {
+    Booking.find({}, function (err, booking) {
+        if (err) return res.status(500).send("Failed Fetching Data")
+        res.status(200).send(JSON.stringify(booking))
+    })
+})
+
 const DeleteBooking = asyncHandler(async (req, res) => {
     console.log(req.params._id);
     Booking.findByIdAndRemove(req.params._id, function (err, booking) {
@@ -62,4 +70,4 @@ const DeleteBooking = asyncHandler(async (req, res) => {
 
 
 
-module.exports = { Bookings, findPendingBooking, findConfirmedBooking, DeleteBooking }
+module.exports = { Bookings, findPendingBooking, findConfirmedBooking, findBooking, DeleteBooking }

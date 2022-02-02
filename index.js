@@ -21,6 +21,8 @@ app.get('/', (req, res) => {
     res.send('Api is Running')
 })
 
+
+
 app.use('/api/admin', adminRoutes)
 
 app.use('/api/mechanics', mechanicRoute)

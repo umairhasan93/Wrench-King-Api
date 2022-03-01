@@ -39,9 +39,27 @@ const findPendingBooking = asyncHandler(async (req, res) => {
     })
 })
 
+const findMechanicPendingBooking = asyncHandler(async (req, res) => {
+    console.log(req.params._id);
+    Booking.find({ "Mechanic_Number": req.params._id, Status: 'Pending' }, function (err, booking) {
+        if (err) return res.status(500).send("Failed Fetching Data")
+        res.status(200).send(JSON.stringify(booking))
+
+    })
+})
+
 const findConfirmedBooking = asyncHandler(async (req, res) => {
     console.log(req.params._id);
     Booking.find({ "User_Number": req.params._id, Status: 'Confirmed' }, function (err, booking) {
+        if (err) return res.status(500).send("Failed Fetching Data")
+        res.status(200).send(JSON.stringify(booking))
+
+    })
+})
+
+const findMechanicConfirmedBooking = asyncHandler(async (req, res) => {
+    console.log(req.params._id);
+    Booking.find({ "Mechanic_Number": req.params._id, Status: 'Confirmed' }, function (err, booking) {
         if (err) return res.status(500).send("Failed Fetching Data")
         res.status(200).send(JSON.stringify(booking))
 
@@ -63,6 +81,15 @@ const DeleteBooking = asyncHandler(async (req, res) => {
     })
 })
 
+const UpdateBooking = asyncHandler(async (req, res) => {
+    console.log(req.params._id)
+    console.log(req.body)
+    const booking = await Booking.findByIdAndUpdate(req.params._id, req.body, { new: true });
+    if (!booking) {
+        return res.status(500).send("No Booking Found")
+    }
+    res.status(200).send(JSON.stringify(booking));
+})
 
 
 
@@ -70,4 +97,5 @@ const DeleteBooking = asyncHandler(async (req, res) => {
 
 
 
-module.exports = { Bookings, findPendingBooking, findConfirmedBooking, findBooking, DeleteBooking }
+
+module.exports = { Bookings, findPendingBooking, findMechanicPendingBooking, findConfirmedBooking, findMechanicConfirmedBooking, findBooking, DeleteBooking, UpdateBooking }

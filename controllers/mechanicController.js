@@ -49,6 +49,8 @@ const registerMechanic = asyncHandler(async (req, res) => {
 const authMechanic = asyncHandler(async (req, res) => {
 
     const { username, password } = req.body
+    console.log("Mechanic")
+    console.log(username, password)
 
     const mechanic = await Mechanic.findOne({ username })
 
@@ -64,7 +66,7 @@ const authMechanic = asyncHandler(async (req, res) => {
         })
     } else {
         res.status(400)
-        throw new Error('Invalid Email or Password')
+        throw new Error('Invalid UserName or Password')
     }
 })
 

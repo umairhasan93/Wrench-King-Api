@@ -2,7 +2,6 @@ const asyncHandler = require('express-async-handler')
 const Booking = require('../models/bookingModel')
 const generateToken = require('../utils/generateToken')
 
-
 const Bookings = asyncHandler(async (req, res) => {
 
     const { User_Name, User_Number, User_Email, Car_Company, Model, Model_Year, Mechanic_Name, Mechanic_Number, Mechanic_Address, Mechanic_Speciality, Mechanic_Type, Booking_Date, Requested_Date, Type, Status } = req.body
@@ -57,6 +56,7 @@ const findConfirmedBooking = asyncHandler(async (req, res) => {
     })
 })
 
+
 const findMechanicConfirmedBooking = asyncHandler(async (req, res) => {
     console.log(req.params._id);
     Booking.find({ "Mechanic_Number": req.params._id, Status: 'Confirmed' }, function (err, booking) {
@@ -90,12 +90,5 @@ const UpdateBooking = asyncHandler(async (req, res) => {
     }
     res.status(200).send(JSON.stringify(booking));
 })
-
-
-
-
-
-
-
 
 module.exports = { Bookings, findPendingBooking, findMechanicPendingBooking, findConfirmedBooking, findMechanicConfirmedBooking, findBooking, DeleteBooking, UpdateBooking }

@@ -83,8 +83,8 @@ const ConfirmedBookingSchema = mongoose.Schema(
             type: String
         },
 
-        TimeOfService:{
-            type: Number
+        Time_Of_Service: {
+            type: String
         }
 
     },

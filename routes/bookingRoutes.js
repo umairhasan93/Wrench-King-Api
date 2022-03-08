@@ -3,6 +3,7 @@ const { Bookings, findPendingBooking, findMechanicPendingBooking, findConfirmedB
 
 const router = express.Router()
 
+
 router.route('/booking').post(Bookings)
 router.route('/').get(findBooking)
 router.route('/:_id').get(findPendingBooking)

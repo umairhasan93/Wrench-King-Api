@@ -6,6 +6,7 @@ const mechanicRoute = require('./routes/mechanicRoute')
 const towingVanRoute = require('./routes/towingVanRoutes')
 const userRoute = require('./routes/userRoutes')
 const bookingRoute = require('./routes/bookingRoutes')
+const confirmedBookingRoute = require('./routes/confirmedBookingRoutes')
 const complainRoute = require('./routes/complainRoutes')
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
 const cors = require('cors')
@@ -32,6 +33,8 @@ app.use('/api/towingVan', towingVanRoute)
 app.use('/api/user', userRoute)
 
 app.use('/api/booking', bookingRoute)
+
+app.use('/api/confirmedbooking', confirmedBookingRoute)
 
 app.use('/api/complain', complainRoute)
 

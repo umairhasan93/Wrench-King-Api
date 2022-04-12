@@ -9,6 +9,10 @@ const ServiceChargesSchema = mongoose.Schema(
 
         Charges: {
             type: Number
+        },
+
+        Mechanic_Type: {
+            type: String
         }
 
     },

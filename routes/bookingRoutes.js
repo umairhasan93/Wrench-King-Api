@@ -1,5 +1,13 @@
 const express = require('express');
-const { Bookings, findPendingBooking, findMechanicPendingBooking, findConfirmedBooking, findMechanicConfirmedBooking, findBooking, DeleteBooking, UpdateBooking } = require('../controllers/bookingController');
+const { Bookings,
+    findPendingBooking,
+    findMechanicPendingBooking,
+    findConfirmedBooking,
+    findMechanicConfirmedBooking,
+    findBooking,
+    DeleteBooking,
+    UpdateBooking
+} = require('../controllers/bookingController');
 
 const router = express.Router()
 

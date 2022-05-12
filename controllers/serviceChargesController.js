@@ -5,11 +5,12 @@ const generateToken = require('../utils/generateToken')
 // Adding Service Charges Function
 const AddServiceCharges = asyncHandler(async (req, res) => {
 
-    const { Service, Charges } = req.body
+    const { Service, Charges, Mechanic_Type } = req.body
 
     const serviceCharges = await ServiceCharges.create({
         Service,
-        Charges
+        Charges,
+        Mechanic_Type
     })
     console.log(Service + "-" + Charges)
 
@@ -18,6 +19,7 @@ const AddServiceCharges = asyncHandler(async (req, res) => {
             _id: serviceCharges._id,
             service: serviceCharges.Service,
             charges: serviceCharges.Charges,
+            mechani_type: serviceCharges.Mechanic_Type,
             token: generateToken(serviceCharges._id)
         })
     } else {
@@ -31,13 +33,37 @@ const AddServiceCharges = asyncHandler(async (req, res) => {
 
 
 const findServiceCharges = asyncHandler(async (req, res) => {
-    ServiceCharges.find({}, function (err, serviceCharges) {
+    console.log(req.params._id)
+    ServiceCharges.find({ "Mechanic_Type": req.params._id }, function (err, serviceCharges) {
         if (err) return res.status(500).send("Failed Fetching Data")
+        console.log(serviceCharges)
         res.status(200).send(JSON.stringify(serviceCharges))
-        // console.log(Charges)
     })
+})
+
+const getCarTuningServiceCharges = asyncHandler(async (req, res) => {
+    const mechanicServiceCharges = await ServiceCharges.find({ Mechanic_Type: 'Tuning' })
+    return res.json(mechanicServiceCharges)
+})
+
+
+const getCarAxleServiceCharges = asyncHandler(async (req, res) => {
+    const mechanicServiceCharges = await ServiceCharges.find({ Mechanic_Type: 'Axle' })
+    return res.json(mechanicServiceCharges)
+})
+
+
+const getCarACServiceCharges = asyncHandler(async (req, res) => {
+    const mechanicServiceCharges = await ServiceCharges.find({ Mechanic_Type: 'A/C' })
+    return res.json(mechanicServiceCharges)
 })
 
 
 
-module.exports = { AddServiceCharges, findServiceCharges }
+module.exports = {
+    AddServiceCharges,
+    findServiceCharges,
+    getCarTuningServiceCharges,
+    getCarAxleServiceCharges,
+    getCarACServiceCharges
+}

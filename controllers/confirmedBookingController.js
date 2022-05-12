@@ -3,8 +3,8 @@ const ConfirmedBooking = require('../models/confirmedBookingModel')
 const generateToken = require('../utils/generateToken')
 
 const d = new Date()
-const dateToday = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear()
-const dateTomorrow = (d.getDate() + 1) + '-' + (d.getMonth() + 1) + '-' + d.getFullYear()
+// const dateToday = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear()
+const dateTomorrow = (d.getDate() + 1) + '-' + '0' + (d.getMonth() + 1) + '-' + d.getFullYear()
 
 
 const ConfirmedBookings = asyncHandler(async (req, res) => {
@@ -35,14 +35,28 @@ const ConfirmedBookings = asyncHandler(async (req, res) => {
     })
 })
 
+const findConfirmedBooking = asyncHandler(async (req, res) => {
+    ConfirmedBooking.find({}, function (err, confirmedbooking) {
+        if (err) return res.status(500).send("Failed Fetching Data")
+        res.status(200).send(JSON.stringify(confirmedbooking))
+    })
+})
+
 const findBookingByTodayDate = asyncHandler(async (req, res) => {
-    const confirmedbooking = await ConfirmedBooking.find({ "Mechanic_Number": req.params._id, 'Booking_Date': dateToday })
+    const d = new Date()
+    const dateToday = d.getDate() + '-' + '0' + (d.getMonth() + 1) + '-' + d.getFullYear()
+    console.log('Hello')
+    console.log(req.params._id)
+    console.log(dateToday)
+    const confirmedbooking = await ConfirmedBooking.find({
+        "Mechanic_Number": req.params._id, "Requested_Date": dateToday
+    })
     return res.json(confirmedbooking)
 })
 
 const findBookingByTomorrowDate = asyncHandler(async (req, res) => {
-    const confirmedbooking = await ConfirmedBooking.find({ "Mechanic_Number": req.params._id, 'Booking_Date': dateTomorrow })
+    const confirmedbooking = await ConfirmedBooking.find({ "Mechanic_Number": req.params._id, 'Requested_Date': dateTomorrow })
     return res.json(confirmedbooking)
 })
 
-module.exports = { ConfirmedBookings, findBookingByTodayDate, findBookingByTomorrowDate }
+module.exports = { ConfirmedBookings, findConfirmedBooking, findBookingByTodayDate, findBookingByTomorrowDate }

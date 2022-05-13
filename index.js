@@ -9,6 +9,8 @@ const bookingRoute = require('./routes/bookingRoutes')
 const confirmedBookingRoute = require('./routes/confirmedBookingRoutes')
 const complainRoute = require('./routes/complainRoutes')
 const serviceChargesRoute = require('./routes/servicesChargesRoutes')
+const billRoute = require('./routes/billRoutes')
+const ratingRoute = require('./routes/ratingRoutes')
 
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
 const cors = require('cors')
@@ -41,6 +43,11 @@ app.use('/api/confirmedbooking', confirmedBookingRoute)
 app.use('/api/complain', complainRoute)
 
 app.use('/api/serviceCharges', serviceChargesRoute)
+
+app.use('/api/bill', billRoute)
+
+app.use('/api/rating', ratingRoute)
+
 
 // Error Middleware
 app.use(notFound)

@@ -45,11 +45,8 @@ const findConfirmedBooking = asyncHandler(async (req, res) => {
 const findBookingByTodayDate = asyncHandler(async (req, res) => {
     const d = new Date()
     const dateToday = d.getDate() + '-' + '0' + (d.getMonth() + 1) + '-' + d.getFullYear()
-    console.log('Hello')
-    console.log(req.params._id)
-    console.log(dateToday)
     const confirmedbooking = await ConfirmedBooking.find({
-        "Mechanic_Number": req.params._id, "Requested_Date": dateToday
+        "Mechanic_Number": req.params._id, "Requested_Date": dateToday, "Status": Confirmed
     })
     return res.json(confirmedbooking)
 })
@@ -59,4 +56,21 @@ const findBookingByTomorrowDate = asyncHandler(async (req, res) => {
     return res.json(confirmedbooking)
 })
 
-module.exports = { ConfirmedBookings, findConfirmedBooking, findBookingByTodayDate, findBookingByTomorrowDate }
+const UpdateBooking = asyncHandler(async (req, res) => {
+    console.log(req.params._id)
+    console.log(req.body)
+    const confirmedbooking = await ConfirmedBooking.findByIdAndUpdate(req.params._id, req.body, { new: true });
+    if (!confirmedbooking) {
+        return res.status(500).send("No Booking Found")
+    }
+    res.status(200).send(JSON.stringify(confirmedbooking));
+})
+
+
+const findUserCompleteService = asyncHandler(async (req, res) => {
+    console.log(req.params._id)
+    const completebooking = await ConfirmedBooking.find({ "User_Number": req.params._id, "Status": "Completed" })
+    return res.json(completebooking)
+})
+
+module.exports = { ConfirmedBookings, findConfirmedBooking, findBookingByTodayDate, findBookingByTomorrowDate, UpdateBooking, findUserCompleteService }

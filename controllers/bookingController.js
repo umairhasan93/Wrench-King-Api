@@ -41,7 +41,8 @@ const findPendingBooking = asyncHandler(async (req, res) => {
 const findMechanicPendingBooking = asyncHandler(async (req, res) => {
     console.log(req.params._id);
     const d = new Date()
-    const date = d.getDate() + '-' + '0' + (d.getMonth() + 1) + '-' + d.getFullYear()
+    const date = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear()
+    console.log(date)
     Booking.find({ "Mechanic_Number": req.params._id, Status: 'Pending', "Requested_Date": date }, function (err, booking) {
         if (err) return res.status(500).send("Failed Fetching Data")
         res.status(200).send(JSON.stringify(booking))

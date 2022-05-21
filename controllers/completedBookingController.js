@@ -34,15 +34,12 @@ const CompletedBookings = asyncHandler(async (req, res) => {
 //     })
 // })
 
-// const findBookingByTodayDate = asyncHandler(async (req, res) => {
-//     const c = "Confirmed"
-//     const d = new Date()
-//     const dateToday = d.getDate() + '-' + (d.getMonth + 1 < 10) ? ('0' + (d.getMonth() + 1)) : ((d.getMonth() + 1)) + '-' + d.getFullYear()
-//     const confirmedbooking = await ConfirmedBooking.find({
-//         "Mechanic_Number": req.params._id, "Requested_Date": dateToday
-//     })
-//     return res.json(confirmedbooking)
-// })
+const getCompleteBooking = asyncHandler(async (req, res) => {
+    const completedbooking = await CompletedBooking.find({
+        "User_Number": req.params._id
+    })
+    return res.json(completedbooking)
+})
 
 // const findBookingByTomorrowDate = asyncHandler(async (req, res) => {
 //     const d = new Date()
@@ -68,4 +65,4 @@ const CompletedBookings = asyncHandler(async (req, res) => {
 //     return res.json(completebooking)
 // })
 
-module.exports = { CompletedBookings }
+module.exports = { CompletedBookings, getCompleteBooking }

@@ -39,10 +39,11 @@ const findConfirmedBooking = asyncHandler(async (req, res) => {
 })
 
 const findBookingByTodayDate = asyncHandler(async (req, res) => {
+    const c = "Confirmed"
     const d = new Date()
     const dateToday = d.getDate() + '-' + (d.getMonth + 1 < 10) ? ('0' + (d.getMonth() + 1)) : ((d.getMonth() + 1)) + '-' + d.getFullYear()
     const confirmedbooking = await ConfirmedBooking.find({
-        "Mechanic_Number": req.params._id, "Requested_Date": dateToday, "Status": Confirmed
+        "Mechanic_Number": req.params._id, "Requested_Date": dateToday
     })
     return res.json(confirmedbooking)
 })
@@ -50,7 +51,7 @@ const findBookingByTodayDate = asyncHandler(async (req, res) => {
 const findBookingByTomorrowDate = asyncHandler(async (req, res) => {
     const d = new Date()
     const dateTomorrow = (d.getDate() + 1) + '-' + '0' + (d.getMonth() + 1) + '-' + d.getFullYear()
-    const confirmedbooking = await ConfirmedBooking.find({ "Mechanic_Number": req.params._id, 'Requested_Date': dateTomorrow, "Status": Confirmed })
+    const confirmedbooking = await ConfirmedBooking.find({ "Mechanic_Number": req.params._id, 'Requested_Date': dateTomorrow })
     return res.json(confirmedbooking)
 })
 
@@ -64,6 +65,14 @@ const UpdateBooking = asyncHandler(async (req, res) => {
     res.status(200).send(JSON.stringify(confirmedbooking));
 })
 
+const DeleteConfirmedBooking = asyncHandler(async (req, res) => {
+    console.log(req.params._id);
+    ConfirmedBooking.findByIdAndRemove(req.params._id, function (err, confirmedbooking) {
+        if (err) return res.status(500).send("There was a problem Deleteing Booking")
+        res.status(200).send(JSON.stringify(confirmedbooking))
+    })
+})
+
 
 const findUserCompleteService = asyncHandler(async (req, res) => {
     console.log(req.params._id)
@@ -71,4 +80,4 @@ const findUserCompleteService = asyncHandler(async (req, res) => {
     return res.json(completebooking)
 })
 
-module.exports = { ConfirmedBookings, findConfirmedBooking, findBookingByTodayDate, findBookingByTomorrowDate, UpdateBooking, findUserCompleteService }
+module.exports = { ConfirmedBookings, findConfirmedBooking, findBookingByTodayDate, findBookingByTomorrowDate, UpdateBooking, DeleteConfirmedBooking, findUserCompleteService }

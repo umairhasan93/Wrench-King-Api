@@ -2,6 +2,10 @@ const asyncHandler = require('express-async-handler')
 const ConfirmedBooking = require('../models/confirmedBookingModel')
 const generateToken = require('../utils/generateToken')
 
+const d = new Date()
+const dateToday = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear()
+const dateTomorrow = (d.getDate() + 1) + '-' + (d.getMonth() + 1) + '-' + d.getFullYear()
+
 
 const ConfirmedBookings = asyncHandler(async (req, res) => {
     console.log(req.body)
@@ -39,9 +43,8 @@ const findConfirmedBooking = asyncHandler(async (req, res) => {
 })
 
 const findBookingByTodayDate = asyncHandler(async (req, res) => {
-    const c = "Confirmed"
-    const d = new Date()
-    const dateToday = d.getDate() + '-' + (d.getMonth + 1 < 10) ? ('0' + (d.getMonth() + 1)) : ((d.getMonth() + 1)) + '-' + d.getFullYear()
+    // const c = "Confirmed"
+    console.log(dateToday)
     const confirmedbooking = await ConfirmedBooking.find({
         "Mechanic_Number": req.params._id, "Requested_Date": dateToday
     })
@@ -49,8 +52,7 @@ const findBookingByTodayDate = asyncHandler(async (req, res) => {
 })
 
 const findBookingByTomorrowDate = asyncHandler(async (req, res) => {
-    const d = new Date()
-    const dateTomorrow = (d.getDate() + 1) + '-' + '0' + (d.getMonth() + 1) + '-' + d.getFullYear()
+    // const d = new Date()
     const confirmedbooking = await ConfirmedBooking.find({ "Mechanic_Number": req.params._id, 'Requested_Date': dateTomorrow })
     return res.json(confirmedbooking)
 })

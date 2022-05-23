@@ -110,7 +110,7 @@ const getCarAxleMechanic = asyncHandler(async (req, res) => {
 
 
 const getCarACMechanic = asyncHandler(async (req, res) => {
-    const mechanic = await Mechanic.find({ mechanicType: 'Car', speciality: 'A/C' }).sort({ rating: -1 })
+    const mechanic = await Mechanic.find({ mechanicType: 'Car', speciality: 'AC' }).sort({ rating: -1 })
     return res.json(mechanic)
 })
 

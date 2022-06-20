@@ -118,9 +118,50 @@ const getCarACMechanic = asyncHandler(async (req, res) => {
 const getBikeMechanic = asyncHandler(async (req, res) => {
     const mechanic = await Mechanic.find({ mechanicType: 'Bike' }).sort({ rating: -1 })
     return res.json(mechanic)
+
+
+})
+
+const getRating = asyncHandler(async (req, res) => {
+
+    Mechanic.ratings = { 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
+    Mechanic.findByIdAndUpdate(id, { $inc: req.body })
+    Mechanic.findByIdAndUpdate(req.body, { ratings: { 1: 3, 2: 1, 3: 1, 4: 1, 5: 1 } }, { new: true })
+    get: {
+        let items = Object.entries(req.body);
+        let sum = 0;
+        let total = 0;
+        for (let [key, value] of items) {
+            total += value;
+            sum += value * parseInt(key);
+        }
+        return Math.round(sum / total)
+    }
+})
+
+const setRating = asyncHandler(async (req, res) => {
+    Mechanic.ratings = { 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
+    Mechanic.findByIdAndUpdate(id, { $inc: req.body })
+    Mechanic.findByIdAndUpdate(req.body, { ratings: { 1: 3, 2: 1, 3: 1, 4: 1, 5: 1 } }, { new: true })
+
+    set: {
+        if (!(this instanceof mongoose.Document)) {
+            // only call setter when updating the whole path with an object
+            if (r instanceof Object) return r
+            else { throw new Error('') }
+        } else {
+            // get the actual ratings object without using the getter which returns  an integer value
+            // r is the ratings which is an integer value that represent the star level from 1 to 5
+            if (r instanceof Object) {
+                return r    // handle setting default when creating object
+            }
+            this.get('ratings', null, { getters: false })[r] = 1 + parseInt(this.get('ratings', null, { getters: false })[r])
+            return this.get('ratings', null, { getters: false })
+        } // return the updated ratings object
+    }
 })
 
 
 
 
-module.exports = { registerMechanic, authMechanic, getCarTuningMechanic, getCarAxleMechanic, getCarACMechanic, getBikeMechanic }
+module.exports = { registerMechanic, authMechanic, getCarTuningMechanic, getCarAxleMechanic, getCarACMechanic, getBikeMechanic, setRating, getRating }

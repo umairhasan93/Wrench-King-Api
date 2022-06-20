@@ -27,18 +27,27 @@ const CompletedBookings = asyncHandler(async (req, res) => {
     })
 })
 
-// const findConfirmedBooking = asyncHandler(async (req, res) => {
-//     ConfirmedBooking.find({}, function (err, confirmedbooking) {
-//         if (err) return res.status(500).send("Failed Fetching Data")
-//         res.status(200).send(JSON.stringify(confirmedbooking))
-//     })
-// })
 
 const getCompleteBooking = asyncHandler(async (req, res) => {
     const completedbooking = await CompletedBooking.find({
         "User_Number": req.params._id
     })
     return res.json(completedbooking)
+})
+
+const DeleteCompletedBooking = asyncHandler(async (req, res) => {
+    // console.log(req.params._id);
+    var id = req.params._id
+    console.log(id)
+    const b = await CompletedBooking.deleteOne({ id })
+    console.log(b)
+    if (err) {
+        res.status(500).send("There was a problem Deleteing Booking")
+    } else {
+        res.status(200).send(b)
+
+    }
+
 })
 
 // const findBookingByTomorrowDate = asyncHandler(async (req, res) => {
@@ -65,4 +74,4 @@ const getCompleteBooking = asyncHandler(async (req, res) => {
 //     return res.json(completebooking)
 // })
 
-module.exports = { CompletedBookings, getCompleteBooking }
+module.exports = { CompletedBookings, getCompleteBooking, DeleteCompletedBooking }

@@ -29,7 +29,7 @@ const RatingSchema = mongoose.Schema(
         },
 
         Rating: {
-            type: Number
+            type: Number,
         }
 
 
